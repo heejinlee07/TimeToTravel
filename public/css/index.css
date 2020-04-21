@@ -27,6 +27,29 @@ body {
   border-radius: 20px;
   background-color: #fff;
 }
+/* .timeline-wrapper {
+  display: none;
+}
+.travel-list-wrapper {
+  display: block;
+}
+.travel-info-wrapper {
+  display: none;
+} */
+
+.main-travels {
+  /* display: block; */
+  display: none;
+}
+.main-schedule {
+  display: block;
+  /* display: none; */
+}
+.main-info {
+  /* display: block; */
+  display: none;
+}
+
 /* HEADER */
 .header {
   width: 100%;
@@ -76,12 +99,14 @@ body {
 }
 .menu-list > li > i {
   color: #fff;
-  font-size: 23px;
+  font-size: 21px;
   line-height: 60px;
+  cursor: pointer;
 }
 .menu-list > li > .fa-plane-departure {
   font-size: 20px;
 }
+/* ----- timeline ----- */
 /* MAIN */
 .main-schedule {
   width: 830px;
@@ -96,32 +121,52 @@ body {
 }
 /* DATE */
 .date-wrapper {
+  position: relative;
   width: 100%; 
-  padding: 10px 20px;
+  padding: 10px 20px 10px 45px;
   /* background-color: #f4f4f4; */
 }
+.date-container {
+  width: 650px;
+  overflow: hidden;
+}
 .date-before-btn, .date-after-btn {
-  float: left;
+  /* float: left; */
+  position: absolute;
+  top: 5px;
   padding: 10px;
   margin-top: 25px;
   font-size: 28px;
   color: rgb(133, 154, 206);
   /* background-color: #e8e8e8; */
+  cursor: pointer;
+}
+.date-before-btn {
+  left: 0px;
+}
+.date-after-btn {
+  right: 80px;
 }
 .date-list {
-  float: left;
+  /* float: left; */
+  display: flex;
   width: 660px;
-  padding: 0 20px;
-  background-color: #fff;
+  height: 100px;
+  padding: 5px 20px;
+  /* background-color: rgb(220, 220, 220); */
+  
 }
-.date-list li {
-  float: left;
+.date-item {
+  /* float: left; */
   /* width: 50px; */
-  margin: 0 7px;
+  margin: 0 7px 10px 7px;
   background-color: rgb(225, 225, 225);
   padding: 15px;
   border-radius: 13px;
+  cursor: pointer;
+  /* transform: translate3d(-120px, 0, 0); */
 }
+
 .date-list .active {
   color: #fff;
   background-color: rgb(133, 154, 206);
@@ -182,6 +227,7 @@ body {
   position: absolute;
   top: 8px;
   right: 13px;
+  cursor: pointer;
 }
 #s01 {
   top: 75px;
@@ -194,8 +240,11 @@ body {
   color: #fff;
   background-color: rgb(211, 149, 169);
 }
+
 /* POPUP */
-.new-schedule-btn {
+.new-schedule-btn,
+.new-travel-btn,
+.new-info-btn {
   position: fixed;
   bottom: 30px;
   right: 30px;
@@ -210,7 +259,9 @@ body {
   cursor: pointer;
   font-weight: 200;
 }
-.popup-bg {
+
+.popup-bg,
+.new-travel-popup-bg {
   /* display: block; */
   display: none;
   position: fixed;
@@ -221,6 +272,7 @@ body {
   background-color: rgba(55, 55, 55, .7);
 }
 .new-schedule-popup {
+  display: none;
   position: fixed;
   top: 120px;
   left: calc(50% - 210px);
@@ -229,6 +281,18 @@ body {
   margin: 30px;
   text-align: center;
   background-color: #fff;
+  z-index: 99;
+}
+/* REMIND: 클래스명 한개로  */
+.schedule-input {
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+/* REMIND: text-hidden추가 */
+.text-hidden {
+  display: none;
 }
 .select-date,
 .select-start-hour,
@@ -248,24 +312,26 @@ body {
 .new-schedule-popup label {
   padding: 9px 10px;
 }
-.new-schedule-popup select {
-  font-size: 16px;
-  width: 100px;
-  height: 35px;
-  padding: 25px;
+.new-schedule-popup select,
+.new-travel-popup select {
+  font-size: 15px;
+  width: 110px;
+  padding: 5px;
   margin: 0 5px 10px 5px;
 }
-.input-place, .input-detail {
+.schedule-input-place, .schedule-input-detail {
   font-size: 14px;
   padding: 5px;
   margin-bottom: 10px;
   width: 100%;
 }
-.popup-remove-btn {
+.popup-remove-btn,
+.new-travel-popup-remove-btn {
   position: absolute;
   top: 10px;
   right: 13px;
   font-size: 23px;
+  cursor: pointer;
 }
 .warnning-text {
   /* display: block; */
@@ -276,10 +342,218 @@ body {
   color: #e38484;
   /* background-color: #f4f4f4; */
 }
+
 .add-schedule-btn {
   font-size: 16px;
   padding: 10px;
   width: 100%;
+  color: #fff;
+  background-color: #333;
+}
+
+/* ----- travel list ----- */
+
+/* MAIN */
+.travel-list {
+  width: 88%;
+  margin-left: 100px;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+.travel-list li {
+  position: relative;
+  float: left;
+  width: calc((100% - 60px) / 3);
+  height: 280px;
+  border-radius: 10px;
+  padding: 15px;
+  line-height: 1.5;
+  margin: 0 20px 20px 0;
+  background-color: #d4d4d4;
+  cursor: pointer;
+}
+.travel-list li h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+.travel-list li em {
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 5px;
+}
+.travel-info {
+  position: absolute;
+  width: calc(100% - 20px);
+  bottom: 10px;
+  right: 10px;
+  /* background-color: #f9f9f9; */
+}
+.travel-place {
+  display: block;
+  font-size: 18px;
+}
+.travel-date {
+  display: block;
+  font-size: 16px;
+}
+.travel-remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+/* POP UP */
+.new-travel-popup {
+  display: none;
+  position: fixed;
+  top: 120px;
+  left: calc(50% - 210px);
+  width: 480px;
+  padding: 30px;
+  margin: 30px;
+  text-align: center;
+  background-color: #fff;
+  z-index: 99;
+}
+.new-travel-popup * {
+  display: block;
+}
+.new-travel-popup h2 {
+  font-size: 23px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.new-travel-popup label {
+  padding: 9px 10px;
+}
+.new-travel-popup input {
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+.popup-remove-btn {
+  position: absolute;
+  top: 10px;
+  right: 13px;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.add-travel-btn {
+  font-size: 16px;
+  padding: 10px;
+  width: 100%;
+  color: #fff;
+  background-color: #333;
+}
+
+/* ----- travel info ----- */
+
+/* MAIN */
+
+.main h2 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+.airline-ticket {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  line-height: 1.2;
+  background-color: #f4f4f4;
+}
+.airline-schedule * {
+  display: block;
+  text-align: center;
+}
+.main h3 {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px;
+}
+.airline-info1, .airline-info2, .airline-departure, .airline-arrival {
+  float: left;
+  padding: 10px;
+}
+.airline-info1 {
+  width: 80px;
+  line-height: 50px;
+}
+.airline-info2 {
+  width: 160px;
+}
+.airline-departure, .airline-arrival {
+  width: 180px;
+}
+.date, .time {
+  font-size: 26px;
+  font-weight: 400;
+}
+.airlines, .airport {
+  font-size: 16px;
+}
+.hotel-reservation1, .hotel-reservation2 {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  line-height: 1.2;
+  background-color: #f4f4f4;
+}
+.hotel-name, .hotel-place, .hotel-site {
+  padding: 50px;
+  font-size: 24px;
+  font-weight: 400;
+}
+/* POP UP */
+.popup-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 60px;
+  background-color: #666;
+  text-align: center;
+  line-height: 65px;
+  color: #fff;
+  font-size: 40px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.popup-form {
+  display: none;
+  position: absolute;
+  width: 800px;
+  height: 400px;
+  padding: 30px;
+  margin: 30px;
+  top: 800px;
+  text-align: center;
+  background-color: #fff;
+}
+.popup-form h2 {
+  font-size: 23px;
+  padding: 5px;
+}
+.popup-form select {
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.input-airlines, .dep-airlines, .arr-airlines, .input-place, .input-title {
+  font-size: 14px;
+  padding: 5px;
+  margin-bottom: 10px;
+  width: 100px;
+}
+.popup-form button {
+  font-size: 16px;
+  padding: 10px;
+  width: 90%;
   color: #fff;
   background-color: #333;
 }
