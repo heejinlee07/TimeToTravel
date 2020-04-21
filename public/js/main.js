@@ -1,7 +1,14 @@
+// import
+// import { rejectAddTravel } from './travel-list.js';
+
 // state
 let schedules = [];
 let travels = [];
 let travelId = '';
+<<<<<<< HEAD
+=======
+
+>>>>>>> e734d77433eef16072120924f4b8cfd352b073a7
 // DOMs
 const $month = document.querySelector('#month-select');
 const $date = document.querySelector('#date-select');
@@ -64,41 +71,79 @@ const removeTravel = async (target) => {
 };
 const goToTimeline = (target) => {
   if (!target.matches('.travel-list > li')) return;
+<<<<<<< HEAD
+=======
+
+>>>>>>> e734d77433eef16072120924f4b8cfd352b073a7
   travelId = target.id;
   getSchedules(travelId);
 };
 const makeScheduleData = newId => {
   axios.post('/schedules', { id: newId });
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> e734d77433eef16072120924f4b8cfd352b073a7
 const addSchedule = () => {
   const date = `${$month.value}/${$date.value}`;
   const timeFrom = `${$startHour.value}:${$startMin.value}`;
   const timeTo = `${$endHour.value}:${$endMin.value}`;
   const place = $inputSchedulePlace.value;
   const detail = $inputScheduleDetail.value;
+<<<<<<< HEAD
   console.log(date)
   console.log(timeFrom)
   console.log(place)
+=======
+
+  console.log(date)
+  console.log(timeFrom)
+  console.log(place)
+
+>>>>>>> e734d77433eef16072120924f4b8cfd352b073a7
   // console.log(axios.post('/schedules', { date, timeFrom, timeTo, place, detail }));
   const { data } = axios.post('/schedules', { date, timeFrom, timeTo, place, detail });
   console.log(data);
 };
+<<<<<<< HEAD
 // event handlers
 window.onload = getTravels;
 $addScheduleBtn.addEventListener('click', addSchedule);
+=======
+
+// event handlers
+window.onload = getTravels;
+
+$addScheduleBtn.addEventListener('click', addSchedule);
+
+>>>>>>> e734d77433eef16072120924f4b8cfd352b073a7
 $addTravelBtn.onclick = async () => {
   const title = $inputTravelTitle.value.trim();
   const place = $inputTravelPlace.value.trim();
   const startDate = `${$startYear.value}/${$startMonth.value}/${$startDate.value}`;
   const endDate = `${$endYear.value}/${$endMonth.value}/${$endDate.value}`;
   const newId = generateId();
+<<<<<<< HEAD
+=======
+
+  // if (rejectAddTravel !== 0) return;
+
+>>>>>>> e734d77433eef16072120924f4b8cfd352b073a7
   const { data } = await axios.post('/travels', { id: newId, title, place, startDate, endDate });
   travels = [data, ...travels];
   closeTravelPopup();
   renderTravelList();
   makeScheduleData(newId);
+<<<<<<< HEAD
   $inputTravelTitle.value = '';
   $inputTravelPlace.value = '';
+=======
+
+  $inputTravelTitle.value = '';
+  $inputTravelPlace.value = '';
+
+>>>>>>> e734d77433eef16072120924f4b8cfd352b073a7
   [...$newTravelPopup.children].forEach(child => {
     if (child.nodeName === 'SELECT') child.firstElementChild.selected = 'selected';
   });
