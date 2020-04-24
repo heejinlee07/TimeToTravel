@@ -22,7 +22,6 @@ const $endHour = document.querySelector('#end-hour-select');
 const $endMin = document.querySelector('#end-min-select');
 const $addScheduleBtn = document.querySelector('.add-schedule-btn');
 const $newTravelPopup = document.querySelector('.new-travel-popup');
-const $newSchedulePopup = document.querySelector('.new-schedule-popup');
 const $inputTravelTitle = document.querySelector('.input-title');
 const $inputTravelPlace = document.querySelector('.input-place');
 const $inputSchedulePlace = document.querySelector('#schedule-input-place');
@@ -54,38 +53,18 @@ const $timelineTitle = document.querySelector('.timeline-travel-title');
 const $infoTitle = document.querySelector('.info-travel-title');
 const $popupBg = document.querySelector('.popup-bg');
 const $popupRemoveBtn = document.querySelector('.popup-remove-btn');
-const $monthSelect = document.querySelector('#month-select');
-const $dateSelect = document.querySelector('#date-select');
-const $inputPlace = document.querySelector('#schedule-input-place');
-const $inputDetail = document.querySelector('#schedule-input-detail');
-const $selectDateWarning = document.querySelector('#date-warning-label');
-const $selectStartWarning = document.querySelector('#start-warning-label');
-const $selectEndWarning = document.querySelector('#end-warning-label');
-const $inputDetailWarning = document.querySelector('#detail-warning-label');
-const $inputPlaceWarning = document.querySelector('#place-warning-label');
-const $deleteConfirmModal = document.querySelector('.delete-confirm-modal');
-const $selectWrappers = document.querySelectorAll('.select-wrapper');
 const $airlineTicket = document.querySelector('.airline-ticket');
 const $airlineSchedule = document.querySelector('.airline-schedule');
-const $airlineScheduleDetail = document.querySelector('.airline-schedule-detail');
-const $airlineScheduleList = document.querySelector('.airline-schedule');
-const $lodgingScheduleList = document.querySelector('.lodging-schedule');
-
 const $airlinePopupBg = document.querySelector('.airlineBg');
 const $hotelPopup = document.querySelector('.new-info-popup2');
 const $airlinePopup = document.querySelector('.new-info-popup');
 const $airlineAddBtn = document.querySelector('.airlineAddBtn');
 const $airlinePopupRemove = document.querySelector('.airlineRemoveBtn');
-const $airlineMonthSelect = document.querySelector('#airline-month-select');
-
 const $hotelBtn = document.querySelector('.hotel-btn');
 const $airlineBtn = document.querySelector('.airline-btn');
 const $hotelPopupRemove = document.querySelector('.hotelRemoveBtn');
 const $hotelAddBtn = document.querySelector('.hotelAddBtn');
 const $hotelPopupBg = document.querySelector('.hotelBg');
-const $departureSec = document.querySelector('.departure-section');
-const $arrivalSec = document.querySelector('.arrival-section');
-
 const $depMonthSelect = document.querySelector('#airline-month-select');
 const $depDaySelect = document.querySelector('#airline-day-select');
 const $inputAirline = document.querySelector('.select-start-date > .input-airlines');
@@ -98,7 +77,6 @@ const $inputDepArrAirport = document.querySelector('.arr-airlines');
 const $inputHotelName = document.querySelector('.new-info-popup2 > .input-title');
 const $inputHotelPlace = document.querySelector('.new-info-popup2 > .input-place');
 const $inputHotelSite = document.querySelector('.new-info-popup2 > .input-site');
-
 const $arrMonthSelect = document.querySelector('#arrival-month-select');
 const $arrDaySelect = document.querySelector('#arrival-day-select');
 const $inputArrAirline = document.querySelector('.arr-input');
@@ -110,7 +88,20 @@ const $ArrDepMinSelect = document.querySelector('#dep-arrival-min-select');
 const $inputArrAirport = document.querySelector('.dep-arr-airline');
 const $scheduleHiddenBtn = document.querySelector('.add-schedule-btn-hidden');
 const $newInfoBtn = document.querySelector('.new-info-btn');
+const $lodgingScheduleList = document.querySelector('.lodging-schedule');
 const $allMoreBtn = document.querySelector('.detail-btn-wrapper');
+const $headerInfo = document.querySelector('.main-info header');
+const $hotelInfo = document.querySelector('.hotel-info');
+const $endHourSelects = document.querySelectorAll('.select-end-hour > .select-wrapper > .hour-select');
+const $startHourSelects = document.querySelectorAll('.select-start-hour > .select-wrapper > .hour-select');
+const $endMinuteSelects = document.querySelectorAll('.select-end-hour > .select-wrapper > .min-select');
+const $startMinuteSelects = document.querySelectorAll('.select-start-hour > .select-wrapper > .min-select');
+const $startHourSelect = document.getElementById('start-hour-select');
+const $startMinSelect = document.getElementById('start-min-select');
+const $endHourSelect = document.getElementById('end-hour-select');
+const $endMinSelect = document.getElementById('end-min-select');
+const $newAirlineBtn = document.querySelector('.airline-btn');
+const $introWrapper = document.querySelector('.intro-wrapper');
 
 // functions
 // popups
@@ -197,7 +188,7 @@ const generateDday = startDate => {
 
   today = today.getTime();
   dDay = new Date(startDate).getTime();
-  dDay = Math.ceil((dDay - today) / 86400000) + 1;
+  dDay = Math.ceil((dDay - today) / 86400000);
 
   return dDay > 0 ? `D-${dDay}` : dDay === 0 ? 'D-Day' : '';
 };
@@ -210,7 +201,7 @@ const sortTravels = travels => {
   newTravels.sort((trav1, trav2) => trav2.startDate < trav1.startDate ? 1 : (trav1.startDate < trav2.startDate ? -1 : 0))
   pastTravels.sort((trav1, trav2) => trav2.startDate > trav1.startDate ? 1 : (trav1.startDate > trav2.startDate ? -1 : 0));
 
-  travels = [...newTravels, ...pastTravels];
+  return travels = [...newTravels, ...pastTravels];
 };
 
 const renderTravelList = () => {
@@ -219,7 +210,7 @@ const renderTravelList = () => {
 
   $travelNoneText.style.display = travels.length === 0 ? 'block' : 'none';
 
-  sortTravels(travels);
+  travels = sortTravels(travels);
 
   travels.forEach(({ id, title, place, startDate, endDate }) => {
     bg++;
@@ -271,8 +262,8 @@ const sortTimeline = schedules => {
     const height = hourHeight * hhDiff + (hourHeight / 6) * (mmDiff / 10);
 
     block.style.top = `${top}px`;
-    block.style.height = height < 38 ? '48px' : `${height}px`;
-    [...block.children].forEach(child => (child.style.display = height < 38 ? 'inline' : 'block'));
+    block.style.height = height < hourHeight ? 'hourHeight' : `${height}px`;
+    [...block.children].forEach(child => (child.style.display = height <= hourHeight ? 'inline' : 'block'));
 
     i++;
   });
@@ -292,6 +283,9 @@ let dateItemMove = 0;
 const dateList = document.querySelector('.date-list');
 const beforeBtn = document.querySelector('.date-before-btn');
 const afterBtn = document.querySelector('.date-after-btn');
+
+
+
 
 const renderDateBox = (startDate, endDate) => {
   let html = '';
@@ -451,6 +445,15 @@ const getTitle = (title, travelBg) => {
   $infoTitle.classList.add(travelBg);
 };
 
+function dateTransition() {
+  const $dateItems = document.querySelectorAll('.date-list li');
+  let i = 0;
+  $dateItems.forEach(item => {
+    i++;
+    item.style.animationDelay = `${i * 80}ms`
+  });
+}
+
 const goToTimeline = async target => {
   const nodeNames = ['LI', 'EM', 'SPAN', 'DIV', 'H2'];
   const targetNode = nodeNames.filter(node => node === target.nodeName)[0];
@@ -484,6 +487,7 @@ const goToTimeline = async target => {
 
   getTitle(title, travelBg);
   renderDateBox(startDate, endDate);
+  dateTransition();
   getSchedules(travelId);
   renderMonthYear(startDate.split('/')[1], startDate.split('/')[0]);
 };
@@ -586,27 +590,6 @@ $timelineCancleBtn.onclick = () => {
 };
 
 // time test
-const $endHourSelects = document.querySelectorAll('.select-end-hour > .select-wrapper > .hour-select');
-const $startHourSelects = document.querySelectorAll('.select-start-hour > .select-wrapper > .hour-select');
-const $endMinuteSelects = document.querySelectorAll('.select-end-hour > .select-wrapper > .min-select');
-const $startMinuteSelects = document.querySelectorAll('.select-start-hour > .select-wrapper > .min-select');
-
-const $startHourSelect = document.getElementById('start-hour-select');
-const $startMinSelect = document.getElementById('start-min-select');
-const $endHourSelect = document.getElementById('end-hour-select');
-const $endMinSelect = document.getElementById('end-min-select');
-
-const $newAirlineBtn = document.querySelector('.airline-btn');
-
-const $airlineHourSelect = document.getElementById('airline-hour-select');
-const $airlineMinSelect = document.getElementById('airline-min-select');
-const $depAirlineHourSelect = document.getElementById('dep-airline-hour-select');
-const $depAirlineMinSelect = document.getElementById('dep-airline-min-select');
-const $arrivalHourSelect = document.getElementById('arrival-hour-select');
-const $arrivalMinSelect = document.getElementById('arrival-min-select');
-const $depArrivalHourSelect = document.getElementById('dep-arrival-hour-select');
-const $depArrivalMinSelect = document.getElementById('dep-arrival-min-select');
-
 const changeEndHour = () => {
   [...$endHourSelect.options].forEach(opt => {
     if (opt.value === $startHourSelect.value) opt.setAttribute('selected', 'selected');
@@ -662,20 +645,6 @@ const printEndTime = target => {
     });
   });
 };
-
-// const changeAirlineEndHour = () => {
-//   // console.log([...$depAirlineHourSelect.options]);
-//   [...$depAirlineHourSelect.options].forEach(opt => {
-//     console.log(opt);
-//     if (opt.value === $startHourSelect.value) opt.setAttribute('selected','selected');
-//   });
-// };
-
-// const changeAirlineEndMin = () => {
-//   [...$depAirlineMinSelect.options].forEach(opt => {
-//     if (opt.value === $startMinSelect.value) opt.setAttribute('selected','selected');
-//   });
-// };
 
 $newScheduleBtn.addEventListener('click', printStartTime);
 $newScheduleBtn.addEventListener('click', printEndTime);
@@ -782,7 +751,7 @@ const renderLodgingInfo = () => {
             <em>숙소${i}</em>
             <span class="hotel-name">${hotelName}</span>
             <span class="hotel-place">${hotelPlace}</span>
-            <span class="hotel-site">${hotelsite}</span>
+            <span class="hotel-site"><a class="hotel-link" href="${hotelsite}">${hotelsite}</a></span>
           </li>`;
     i++;
   });
@@ -880,9 +849,6 @@ $hotelAddBtn.onclick = addHotelInfo;
 $airlinePopupRemove.addEventListener('click', airClosePopup);
 $airlinePopupBg.addEventListener('click', airClosePopup);
 
-const $headerInfo = document.querySelector('.main-info header');
-const $hotelInfo = document.querySelector('.hotel-info');
-
 $airlineBtn.onclick = () => {
   $menuBar.style.filter = 'blur(3px)';
   $headerInfo.style.filter = 'blur(3px)';
@@ -899,6 +865,9 @@ $airlineAddBtn.onclick = () => {
 
 $airlinePopupBg.addEventListener('click', resetAirlinePopup);
 $hotelPopupBg.addEventListener('click', resetLodgingPopup);
+
+const intro = setTimeout(() => $introWrapper.style.display = 'none', 4000);
+// window.addEventListener('load', () => intro());
 
 // export
 export { $scheduleHiddenBtn, $timeWarningText, $dateWarningText, $startYear, $startMonth, $startDate, $endYear, $endMonth, $endDate, $startHour, $startMin, $endHour, $endMin, changeNav, resetSchedulePopup, resetTravelPopup, $mainList, $menuList, $travelList, $timelineTitle };
