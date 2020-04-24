@@ -1,10 +1,4 @@
 {
-<<<<<<< HEAD
-  "travels": [],
-  "schedules": [],
-  "airlines": [],
-  "lodgings": []
-=======
   "travels": [
     {
       "id": 1,
@@ -155,5 +149,4 @@
       "id": 3
     }
   ]
->>>>>>> 624098a26f242a6b1f93393ddfdb0a5ba234ac8a
 }
